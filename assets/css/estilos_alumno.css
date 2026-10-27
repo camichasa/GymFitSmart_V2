@@ -1,0 +1,656 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    padding-bottom: 80px;
+}
+
+/* Estilo del encabezado y el pie de la pagina*/
+header {
+    background-color: #46a80d;
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+footer {
+    background-color: #46a80d;
+    color: white;
+    display: flex;
+    padding: 1rem 2rem;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+}
+
+.logo {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+/* Estilo del menú */
+.hamburguesa {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+}
+
+.hamburguesa span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* Oscurece el fondo cuando se abre el menu */
+.menu-overlay {
+    position: fixed;
+    inset: 0;
+    border: none;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 998;
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Panel lateral que sale desde la izquierda */
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 80%;
+    height: 100%;
+    background-color: #46a80d;
+    padding: 4rem 1rem 1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.menu-lateral.active {
+    transform: translateX(0);
+}
+
+.menu-lateral ul {
+    list-style: none;
+}
+
+.menu-lateral a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    transition: background 0.3s;
+}
+
+.menu-lateral a:hover {
+    background-color: #3a8c0a;
+}
+
+.menu-cerrar {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Título de la pantalla en Mi rutina */
+.main-content {
+    padding: 2rem;
+    max-width: 1800px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* estilo del boton para descargar la rutina en pdf*/
+.btn-pdf {
+    display: block;
+    margin: 15px auto 0;
+    padding: 10px 24px;
+    background-color: #46a80d;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    width: fit-content;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.btn-pdf:hover {
+    background-color: #c1121f;
+    transform: translateY(-2px);
+}
+
+/* Botón para confirmar la descarga del PDF */
+#pdf-modal .btn-confirm {
+    /* al ser mas especifico, el boton de confirmacion solo usa este estilo en vez del rojo de cerrar sesion */
+    background-color: #46a80d;
+    color: white;
+}
+
+#pdf-modal .btn-confirm:hover {
+    background-color: #c1121f;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 3rem;
+}
+
+/* Botones de los días */
+.days-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+.day-box {
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.day-box:hover {
+    background-color: #46a80d;
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Detalle del día elegido */
+.workout-details {
+    display: none;
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.workout-details.active {
+    display: block;
+}
+
+.workout-details h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.workout-details p {
+    color: #555;
+    margin: 5px 0;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 350px;
+    width: 90%;
+}
+
+.modal-box p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+/* estilo del carrusel */
+.carrusel {
+    position: relative;
+    max-width: 1000px;
+    height: 450px;
+    margin: 2rem auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: #ddd;
+}
+
+.slides,
+.slide {
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.45);
+    color: white;
+    border: none;
+    padding: 0.8rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.carrusel-btn:hover {
+    background-color: #46a80d;
+}
+
+.carrusel-btn.prev {
+    left: 10px;
+}
+
+.carrusel-btn.next {
+    right: 10px;
+}
+
+.carrusel-puntos {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.punto {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+}
+
+.punto.active {
+    background-color: #46a80d;
+}
+
+/* estilo compartido de todas las cajas de mis datos */
+.contenedor {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 400px));
+    justify-content: center;
+    align-items: start;
+    gap: 2rem;
+    padding: 2rem 1rem 6rem;
+}
+
+.contenedor .btn-guardar {
+    grid-column: 1 / -1;
+    /* ocupa todas las columnas, o sea una fila propia */
+    justify-self: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* estilo de las cajas de los datos */
+.datos-box {
+    background: white;
+    border: 2px solid #46a80d;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.datos-box h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #46a80d;
+}
+
+.datos-box label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.datos-box input,
+.datos-box select {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.objetivo-box {
+    background-color: white;
+    border: 2px solid #46a80d;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.objetivo-box h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #46a80d;
+}
+
+.objetivo-box label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.objetivo-box input,
+.objetivo-box select {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.emergency-box {
+    background-color: white;
+    border: 2px solid #46a80d;
+    border-radius: 8px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.emergency-box h4 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #46a80d;
+}
+
+.emergency-box label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.emergency-box input,
+.emergency-box select {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.btn-guardar {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: #46a80d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-guardar:hover {
+    background-color: #3a8c0a;
+}
+
+
+/* Ventana de cerrar sesión */
+dialog {
+    margin: auto;
+    padding: 2rem;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 350px;
+    width: 90%;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.btn-confirm {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #bdc3c7;
+    color: #333;
+}
+
+/* ---------- Mi progreso ---------- */
+
+.progreso-msg {
+    max-width: 800px;
+    margin: 1rem auto 0;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.progreso-msg-ok {
+    background: #e6f6dc;
+    color: #2d6a08;
+    border: 1px solid #46a80d;
+}
+
+.progreso-msg-error {
+    background: #fde8e8;
+    color: #9b1c1c;
+    border: 1px solid #e0a0a0;
+}
+
+.progreso-resumen {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.progreso-dato {
+    flex: 1 1 180px;
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progreso-dato strong {
+    display: block;
+    font-size: 1.8rem;
+    color: #46a80d;
+}
+
+.progreso-dato span {
+    color: #555;
+}
+
+.progreso-box {
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progreso-box h2 {
+    text-align: center;
+    color: #46a80d;
+    margin-bottom: 1rem;
+}
+
+.progreso-box p {
+    color: #555;
+    text-align: center;
+}
+
+.progreso-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.progreso-form label {
+    display: block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.progreso-form select,
+.progreso-form input {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: normal;
+}
+
+.progreso-form .btn-guardar {
+    width: 100%;
+}
+
+.progreso-tabla {
+    overflow-x: auto;
+}
+
+.progreso-tabla table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.progreso-tabla th,
+.progreso-tabla td {
+    padding: 0.6rem;
+    border-bottom: 1px solid #e3e3e3;
+    text-align: center;
+}
+
+.progreso-tabla th {
+    background: #f0f8ea;
+    color: #333;
+}
+
+.cambio-sube {
+    color: #2d6a08;
+    font-weight: bold;
+}
+
+.cambio-baja {
+    color: #9b1c1c;
+    font-weight: bold;
+}
