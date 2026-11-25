@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../assets/css/estilos_autenticacion.css">
+
+    <title>Login - GymFit Smart</title>
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <section class="tarjeta">
+
+            <h1 class="logo-texto">GYMFIT SMART</h1>
+
+            <h2>Ingreso al sistema</h2>
+
+            <p class="subtitulo">
+                Ingresá con tu cuenta
+            </p>
+
+            <form action="validar_login.php" method="post">
+
+                <section class="campo">
+                    <label for="email">Email</label>
+
+                    <input type="email" name="email" id="email" placeholder="Ingresá tu email" required>
+                </section>
+
+                <section class="campo">
+                    <label for="contra">Contraseña</label>
+
+                    <input type="password" name="contra" id="contra" placeholder="Ingresá tu contraseña" required>
+                </section>
+
+                <button type="submit" class="btn-principal">
+                    INGRESAR
+                </button>
+
+            </form>
+
+            <p class="pie-formulario">
+                ¿No tenés cuenta?
+                <a href="formulario_registro.html">Registrate</a>
+            </p>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
